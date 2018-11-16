@@ -24,14 +24,14 @@ jobs:
          paths:
           -./venv
           key:
-          - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
+           - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
           paths:
             - ".venv"
 
       - run:
           command: |
           . venv/bin/activate
-            pytest
+          pytest
       - store_test_results:
           path: test-results
       - store_artifacts:
