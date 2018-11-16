@@ -26,6 +26,7 @@ jobs:
 
       - run:
           command: |
+            mkdir -p $test-results
             . venv/bin/activate
             pytest
       - store_test_results:
