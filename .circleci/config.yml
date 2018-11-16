@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/celery-beat
     docker:
       - image: circleci/python:3.6.4
         environment:
@@ -10,19 +9,20 @@ jobs:
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle_test
+
+    working_directory: ~/celery-beat
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
-       - restore_cache:
+      - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirments/requirements.txt" }}
       - run:
           name: Install Python deps in a venv
           command: |
-            python3 -m venv venv
+            virtualenv venv
             . venv/bin/activate
             pip install -r requirments/requirements.txt
       - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirments/requirements.txt" }}
           key: deps1-{{ .Branch }}-{{ checksum "requirments/requirements.txt" }}
           paths:
             - "venv"
