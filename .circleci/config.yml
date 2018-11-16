@@ -10,7 +10,7 @@ jobs:
           POSTGRES_DB: circle_test
           POSTGRES_PASSWORD : Password_db
     steps:
-      - checkout
+      - type: checkout
 
       - restore_cache:
           key:
