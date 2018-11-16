@@ -13,7 +13,7 @@ jobs:
       - type: checkout
       - restore_cache:
           key:
-          - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
+           - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
       - run:
           name: 'installing dependencies'
           command: |
