@@ -22,10 +22,7 @@ jobs:
             sudo pip install pipenv
             pipenv install
       - save_cache:
-          key:
-            - v1-dependencies-{{ checksum "requirment/requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+          key: deps1-{{ .Branch }}-{{ checksum "requirment/requirements.txt" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
