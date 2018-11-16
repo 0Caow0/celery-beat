@@ -1,35 +1,38 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/circleci-demo-python-django
+    working_directory: ~/celery-beat/testapp
     docker:
       - image: circleci/python:3.6.4
-        environment:
-          PIPENV_VENV_IN_PROJECT: true
-          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD : Password_db
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+
       - restore_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key:
+          - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
       - run:
+          name: 'installing dependencies'
           command: |
-            sudo pip install pipenv
-            pipenv install
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirments/requirements.txt
       - save_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      paths:
+        -./venv
+          key:
+          - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
           paths:
             - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.6/site-packages"
+
       - run:
           command: |
-            pipenv run "python manage.py test"
+          . venv/bin/activate
+            pytest
       - store_test_results:
           path: test-results
       - store_artifacts:
