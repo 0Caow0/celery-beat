@@ -12,8 +12,7 @@ jobs:
     steps:
       - type: checkout
       - restore_cache:
-          key:
-           - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
+          key: v1-dependecies-{{ checksum "requirments/requirements.txt" }}
       - run:
           name: 'installing dependencies'
           command: |
@@ -21,17 +20,16 @@ jobs:
             . venv/bin/activate
             pip install -r requirments/requirements.txt
       - save_cache:
-         paths:
-          -./venv
-         key:
-          - v1-dependecies-{{ checksum "requirments/requirements.txt" }}
+          paths:
+            -./venv
+          key: v1-dependecies-{{ checksum "requirments/requirements.txt" }}
 
       - run:
           command: |
-           . venv/bin/activate
-           pytest
+            . venv/bin/activate
+            pytest
       - store_test_results:
-          path: test-results
+           path: test-results
       - store_artifacts:
-          path: test-results
-          destination: tr1
+           path: test-results
+           destination: tr1
